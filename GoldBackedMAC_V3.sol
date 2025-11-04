@@ -2,46 +2,49 @@
 pragma solidity ^0.8.30;
 
 // =================================================================================
-// 1. OpenZeppelin Context.sol (Abstract base for gas savings)
+// 1. UUPS Proxy Standard Libraries (Remix Compatible - Local Implementation)
 // =================================================================================
+
+// Context: msg.sender 및 msg.data를 제공하는 기본 추상 컨트랙트
 abstract contract Context {
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
     }
+}
 
-    function _msgData() internal view virtual returns (bytes calldata) {
-        return msg.data;
+// Initializable: 초기화 로직을 보장하는 컨트랙트 (constructor 대신 initialize 사용)
+abstract contract Initializable {
+    bool private _initialized;
+    bool private _initializing;
+
+    modifier initializer() {
+        require(_initializing || !_initialized, "Initializable: contract is already initialized");
+        bool isInitializing = _initializing;
+        _initializing = true;
+        _initialized = true;
+        _;
+        _initializing = isInitializing;
     }
 }
 
-// =================================================================================
-// 2. OpenZeppelin Ownable.sol (Access control)
-// =================================================================================
-abstract contract Ownable is Context {
+// OwnableUpgradeable: 소유권 관리 (업그레이드 가능 버전에 맞춤)
+abstract contract OwnableUpgradeable is Context, Initializable {
     address private _owner;
 
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
-    constructor(address initialOwner) {
+    function __Ownable_init(address initialOwner) internal initializer {
         _transferOwnership(initialOwner);
     }
-
+    
     function owner() public view virtual returns (address) {
         return _owner;
     }
 
     modifier onlyOwner() {
-        require(owner() == _msgSender(), "Ownable: caller is not the owner");
+        // ✨ 이 부분이 Remix에서 문제없이 작동하도록 Context를 상속받아 수정했습니다.
+        require(owner() == _msgSender(), "Ownable: caller is not the owner"); 
         _;
-    }
-
-    function renounceOwnership() public virtual onlyOwner {
-        _transferOwnership(address(0));
-    }
-
-    function transferOwnership(address newOwner) public virtual onlyOwner {
-        require(newOwner != address(0), "Ownable: new owner is the zero address");
-        _transferOwnership(newOwner);
     }
 
     function _transferOwnership(address newOwner) internal virtual {
@@ -49,11 +52,27 @@ abstract contract Ownable is Context {
         _owner = newOwner;
         emit OwnershipTransferred(oldOwner, newOwner);
     }
+    
+    // 이 외의 함수 (renounceOwnership, transferOwnership)는 로직 구현에서 생략 가능
 }
+
+// UUPSUpgradeable: UUPS 표준을 따르는 업그레이드 로직 (Transparent Proxy와의 충돌 방지)
+abstract contract UUPSUpgradeable is Initializable {
+    
+    // 💡 ERC1967 Storage Slot: UUPS를 위한 식별자 (OpenZeppelin 표준)
+    bytes32 internal constant _IMPLEMENTATION_SLOT = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
+
+    function _authorizeUpgrade(address newImplementation) internal virtual;
+
+    function __UUPSUpgradeable_init() internal initializer {}
+
+    // upgradeTo 및 기타 표준 함수는 프록시 계약에 의해 처리되므로,
+    // 로직 계약인 이 파일에서는 _authorizeUpgrade만 구현합니다.
+}
+
 
 // =================================================================================
 // 3. OpenZeppelin IERC20.sol (Interface for MAC Token)
-// ** Decimals 정보 조회를 위해 IERC20 대신 ERC20 표준 인터페이스를 사용합니다. **
 // =================================================================================
 interface IERC20Extended { 
     event Transfer(address indexed from, address indexed to, uint256 value);
@@ -65,37 +84,30 @@ interface IERC20Extended {
     function allowance(address owner, address spender) external view returns (uint256);
     function approve(address spender, uint256 amount) external returns (bool);
     function transferFrom(address from, address to, uint256 amount) external returns (bool);
-    function decimals() external view returns (uint8); // GMA-02 해결을 위해 추가
+    function decimals() external view returns (uint8);
 }
 
 // =================================================================================
-// 4. GoldBackedMAC.sol (Your main contract logic)
+// 4. GoldBackedMAC_V3 (Implementation Contract - 실제 로직 계약)
 // =================================================================================
-contract GoldBackedMAC is Ownable {
-    // 담보로 사용되는 MAC 토큰 컨트랙트의 인터페이스 (Extended 사용)
+contract GoldBackedMAC_V3 is Initializable, OwnableUpgradeable, UUPSUpgradeable {
+    
+    // 상태 변수 (Storage Variables - 순서 주의!)
+    // UUPS에서 상태 변수 선언 순서는 매우 중요합니다.
     IERC20Extended public macToken;
 
-    // GMA-01 해결: 개인별 담보 기록(collateralAmount) 매핑은 제거됩니다.
-    // G-MAC 토큰이 ERC-20으로 유동성을 갖기 위해 컨트랙트 전체 담보만 사용합니다.
-
-    // 담보 대비 발행 비율 (G-MAC의 최종 목표인 1.5배 초과 담보를 가정하고 COLLATERAL_RATIO를 1.5로 설정합니다.)
-    // GMA-02 해결: 비율 계산을 위한 SCALE_FACTOR를 추가하여 소수점 없는 정수 계산을 지원합니다.
-    uint256 public constant COLLATERAL_RATIO_NUMERATOR = 15; // 150% (1.5)
+    uint256 public constant COLLATERAL_RATIO_NUMERATOR = 15;
     uint256 public constant COLLATERAL_RATIO_DENOMINATOR = 10;
     
-    // G-MAC의 소수점 자릿수 (ERC20 표준)
     uint8 public constant G_MAC_DECIMALS = 18;
 
-    // Gold-Backed 토큰의 메타데이터
     string public constant name = "Gold-Backed MyAwesomeCoin";
     string public constant symbol = "G-MAC";
     uint8 public constant decimals = G_MAC_DECIMALS; 
     
-    // 발행된 Gold-Backed 토큰의 총 공급량 및 사용자 잔액
     uint256 private _totalSupply;
     mapping(address => uint256) public balanceOf;
 
-    // allowance 매핑 추가 (ERC20 표준 준수를 위해)
     mapping(address => mapping(address => uint256)) private _allowances;
 
     // 이벤트 정의
@@ -105,17 +117,28 @@ contract GoldBackedMAC is Ownable {
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
     /**
-     * @dev 컨트랙트 생성자
-     * @param _macTokenAddress 담보로 사용될 MyAwesomeCoin (MAC)의 ERC20 컨트랙트 주소
-     * GMA-03 해결: 사용되지 않는 _oracleAddress 인자를 제거했습니다.
+     * @dev 컨트랙트 초기화 함수 (Constructor 대체)
+     * 이 함수는 배포 후 딱 한 번만 호출되어야 합니다.
      */
-    constructor(address _macTokenAddress) Ownable(_msgSender()) {
-        // GMA-04 해결: MAC 토큰 주소에 대한 제로 주소 검증 추가
+    function initialize(address _macTokenAddress) public initializer {
+        // UUPS 및 Ownable 초기화
+        __Ownable_init(_msgSender()); // 배포자를 Owner로 설정
+        __UUPSUpgradeable_init(); // UUPS 초기화
+        
+        // GMA-04 해결: MAC 토큰 주소에 대한 제로 주소 검증
         require(_macTokenAddress != address(0), "Invalid MAC token address");
 
-        // MyAwesomeCoin 컨트랙트 주소를 저장합니다.
+        // MyAwesomeCoin 컨트랙트 주소를 저장
         macToken = IERC20Extended(_macTokenAddress);
     }
+    
+    /**
+     * @dev UUPS 표준: 업그레이드 권한 부여 함수.
+     * UUPSUpgradeable 계약은 이 함수를 구현해야 합니다.
+     * onlyOwner (Owner만 업그레이드 가능)로 구현되었습니다.
+     */
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+
 
     // --- GMA-02 해결을 위한 헬퍼 함수: 소수점 정규화 ---
     function _scaleAmount(uint256 amount, uint8 fromDecimals, uint8 toDecimals) internal pure returns (uint256) {
@@ -189,25 +212,17 @@ contract GoldBackedMAC is Ownable {
 
     /**
      * @dev MAC 토큰을 담보로 Gold-Backed 토큰을 발행합니다.
-     * @param amount 담보로 제공할 MAC 토큰의 양 (MAC 토큰의 decimals 기준)
      */
     function mint(uint256 amount) external {
         require(amount > 0, "Amount must be greater than zero");
         
-        // 사용자로부터 MAC 토큰을 이 컨트랙트로 전송
         require(macToken.transferFrom(_msgSender(), address(this), amount), "MAC token transfer failed");
         
-        // GMA-01 해결: 개인 담보 기록 업데이트 로직 제거
-        
-        // GMA-02 해결: MAC 토큰의 amount 단위를 G-MAC 단위로 정규화 (1:1 가치 기준으로 맞춤)
         uint8 macDecimals = macToken.decimals();
         uint256 scaledAmount = _scaleAmount(amount, macDecimals, G_MAC_DECIMALS);
 
-        // Gold-Backed 토큰 발행 (초과 담보 비율 적용)
-        // mintAmount = scaledAmount * 1 / 1.5 (G-MAC 발행량은 MAC 담보량보다 적어야 함)
         uint256 mintAmount = (scaledAmount * COLLATERAL_RATIO_DENOMINATOR) / COLLATERAL_RATIO_NUMERATOR;
 
-        // ERC20 잔액 업데이트
         unchecked {
             balanceOf[_msgSender()] += mintAmount;
             _totalSupply += mintAmount;
@@ -219,34 +234,21 @@ contract GoldBackedMAC is Ownable {
 
     /**
      * @dev Gold-Backed 토큰을 소각하고 담보된 MAC 토큰을 돌려받습니다.
-     * @param amount 소각할 Gold-Backed 토큰의 양 (G-MAC의 decimals 기준)
      */
     function redeem(uint256 amount) external {
         require(amount > 0, "Amount must be greater than zero");
         require(balanceOf[_msgSender()] >= amount, "Insufficient G-MAC balance");
         
-        // 필요한 담보 계산 (초과 담보 비율을 역산하여 돌려줄 MAC 토큰의 양을 계산)
-        // collateralToReturn = amount * 1.5 (G-MAC 소각량보다 돌려줄 MAC 담보량이 많아야 함)
         uint256 collateralToReturnScaled = (amount * COLLATERAL_RATIO_NUMERATOR) / COLLATERAL_RATIO_DENOMINATOR;
         
-        // GMA-02 해결: 돌려줄 MAC 토큰의 단위를 MAC 토큰의 decimals에 맞게 조정
         uint8 macDecimals = macToken.decimals();
         uint256 collateralToReturn = _scaleAmount(collateralToReturnScaled, G_MAC_DECIMALS, macDecimals);
         
-        // GMA-01 해결: 개인 담보 확인 로직 제거
-        
-        // 컨트랙트가 충분한 MAC 잔액을 가지고 있는지 확인 (전송 로직에서 간접적으로 검증됨)
-        
-        // Gold-Backed 토큰 소각
         unchecked {
             balanceOf[_msgSender()] -= amount;
             _totalSupply -= amount;
         }
         
-        // GMA-01 해결: 개인 담보 기록 업데이트 로직 제거
-        
-        // 담보 MAC 토큰을 사용자에게 반환
-        // (이 transfer 호출이 컨트랙트에 MAC 잔액이 충분한지 확인하는 역할을 겸합니다)
         require(macToken.transfer(_msgSender(), collateralToReturn), "MAC token transfer failed");
         
         emit Redeem(_msgSender(), amount);
