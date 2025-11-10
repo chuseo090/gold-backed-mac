@@ -2,6 +2,15 @@
 pragma solidity ^0.8.30;
 
 // =================================================================================
+// 0. UUPS 필수 인터페이스 추가 (pure로 수정)
+// =================================================================================
+
+interface IERC1822Proxiable {
+    // 💡 Warning 해결: 함수가 상수만 반환하므로 view 대신 pure를 사용
+    function proxiableUUID() external pure returns (bytes32); 
+}
+
+// =================================================================================
 // 1. UUPS Proxy Standard Libraries
 // =================================================================================
 
@@ -51,6 +60,7 @@ abstract contract OwnableUpgradeable is Context, Initializable {
         _;
     }
 
+    // GF1-08 수정: Zero Address 검증 추가
     function _transferOwnership(address newOwner) internal virtual {
         require(newOwner != address(0), "Ownable: new owner is the zero address");
         
@@ -60,7 +70,7 @@ abstract contract OwnableUpgradeable is Context, Initializable {
     }
 }
 
-abstract contract UUPSUpgradeable is Initializable {
+abstract contract UUPSUpgradeable is Initializable, IERC1822Proxiable {
     
     bytes32 internal constant _IMPLEMENTATION_SLOT = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
 
@@ -68,16 +78,30 @@ abstract contract UUPSUpgradeable is Initializable {
 
     function __UUPSUpgradeable_init() internal initializer {}
     
-    // ✨ V4.4 수정: onlyOwner 모디파이어를 제거하고, 구현 계약에서 재정의하도록 함
+    // 💡 Warning 해결: view -> pure로 변경
+    function proxiableUUID() external pure override returns (bytes32) {
+        return _IMPLEMENTATION_SLOT;
+    }
+
+    // GF1-02 문제 3 해결: calldata 없이 업그레이드
     function upgradeTo(address newImplementation) public virtual {
         _upgradeToAndCallUUPS(newImplementation, new bytes(0), false);
     }
     
+    // GF1-02 문제 3 해결: calldata 포함 업그레이드 (데이터 마이그레이션 지원)
+    function upgradeToAndCall(address newImplementation, bytes memory data) public virtual {
+        _upgradeToAndCallUUPS(newImplementation, data, true);
+    }
+
+    // GF1-02 문제 2 해결: UUPS 호환성 검증 로직 추가
     function _upgradeToAndCallUUPS(address newImplementation, bytes memory data, bool forceCall) internal {
-        require(newImplementation != address(0), "UUPS: new implementation is the zero address"); 
+        bytes32 slot = _IMPLEMENTATION_SLOT;
+        require(newImplementation != address(0), "UUPS: new implementation is the zero address");
+        // 새로운 구현 계약이 UUPS 표준을 따르는지 확인 (브릭 방지)
+        require(IERC1822Proxiable(newImplementation).proxiableUUID() == slot, "UUPS: not UUPS compatible");
         
         assembly {
-            sstore(_IMPLEMENTATION_SLOT, newImplementation)
+            sstore(slot, newImplementation)
         }
         
         if (data.length > 0 || forceCall) {
@@ -122,11 +146,12 @@ contract GoldBackedMAC_V3 is Initializable, OwnableUpgradeable, UUPSUpgradeable 
     uint8 public constant decimals = G_MAC_DECIMALS; 
     
     uint256 private _totalSupply;
-    mapping(address => uint256) public balanceOf;
+    // ✅ public이므로 자동 getter 함수가 생성됨 (balanceOf 중복 선언 문제 해결)
+    mapping(address => uint256) public balanceOf; 
 
     mapping(address => mapping(address => uint256)) private _allowances;
     
-    // Storage Gap
+    // GF1-04 수정: Storage Gap
     uint256[50] private __gap;
 
     // 이벤트 정의
@@ -135,7 +160,7 @@ contract GoldBackedMAC_V3 is Initializable, OwnableUpgradeable, UUPSUpgradeable 
     event Transfer(address indexed from, address indexed to, uint256 value);
     event Approval(address indexed owner, address indexed spender, uint256 value);
     
-    // Logic Contract 직접 초기화 방지
+    // GF1-09 수정: Logic Contract 직접 초기화 방지
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers(); 
@@ -153,10 +178,11 @@ contract GoldBackedMAC_V3 is Initializable, OwnableUpgradeable, UUPSUpgradeable 
         macToken = IERC20Extended(_macTokenAddress);
     }
 
-    // ✨ V4.4 수정: upgradeTo 함수를 구현 계약에서 onlyOwner를 붙여 재정의
+    // GF1-02 문제 1 해결: upgradeTo 오버라이드 시, 핵심 업그레이드 로직 호출
     function upgradeTo(address newImplementation) public override onlyOwner {
         _authorizeUpgrade(newImplementation);
-        // _upgradeToAndCallUUPS는 UUPSUpgradeable 내에서 호출됨
+        // _upgradeToAndCallUUPS를 명시적으로 호출해야 Implementation Slot이 업데이트됩니다.
+        _upgradeToAndCallUUPS(newImplementation, new bytes(0), false);
     }
     
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
@@ -179,6 +205,8 @@ contract GoldBackedMAC_V3 is Initializable, OwnableUpgradeable, UUPSUpgradeable 
     function totalSupply() public view returns (uint256) {
         return _totalSupply;
     }
+
+    // balanceOf(address) 함수는 public mapping으로 인해 자동 생성되므로 중복 선언 제거됨.
 
     function transfer(address to, uint256 amount) public returns (bool) {
         _transfer(_msgSender(), to, amount);
@@ -240,7 +268,7 @@ contract GoldBackedMAC_V3 is Initializable, OwnableUpgradeable, UUPSUpgradeable 
         uint8 macDecimals = macToken.decimals();
         uint256 scaledAmount = _scaleAmount(amount, macDecimals, G_MAC_DECIMALS);
 
-        uint256 mintAmount = (scaledAmount * COLLATERAL_RATIO_DENOMINATOR) / COLLATERAL_RATIO_NUMERATOR;
+        uint256 mintAmount = (scaledAmount * COLLATERAL_RATIO_NUMERATOR) / COLLATERAL_RATIO_DENOMINATOR;
 
         unchecked {
             balanceOf[_msgSender()] += mintAmount;
@@ -271,4 +299,5 @@ contract GoldBackedMAC_V3 is Initializable, OwnableUpgradeable, UUPSUpgradeable 
         emit Transfer(_msgSender(), address(0), amount);
     }
 }
+
 
