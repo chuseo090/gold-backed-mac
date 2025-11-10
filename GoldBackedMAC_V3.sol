@@ -2,11 +2,10 @@
 pragma solidity ^0.8.30;
 
 // =================================================================================
-// 0. UUPS 필수 인터페이스 추가 (pure로 수정)
+// 0. UUPS 필수 인터페이스 추가
 // =================================================================================
 
 interface IERC1822Proxiable {
-    // 💡 Warning 해결: 함수가 상수만 반환하므로 view 대신 pure를 사용
     function proxiableUUID() external pure returns (bytes32); 
 }
 
@@ -70,7 +69,8 @@ abstract contract OwnableUpgradeable is Context, Initializable {
     }
 }
 
-abstract contract UUPSUpgradeable is Initializable, IERC1822Proxiable {
+// ⚠️ 상속 구조 수정: OwnableUpgradeable 상속 추가! (오류 해결)
+abstract contract UUPSUpgradeable is Initializable, IERC1822Proxiable, OwnableUpgradeable {
     
     bytes32 internal constant _IMPLEMENTATION_SLOT = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
 
@@ -78,25 +78,34 @@ abstract contract UUPSUpgradeable is Initializable, IERC1822Proxiable {
 
     function __UUPSUpgradeable_init() internal initializer {}
     
-    // 💡 Warning 해결: view -> pure로 변경
+    // UUPS 호환성 ID 반환
     function proxiableUUID() external pure override returns (bytes32) {
         return _IMPLEMENTATION_SLOT;
     }
 
     // GF1-02 문제 3 해결: calldata 없이 업그레이드
+    // upgradeTo는 GoldBackedMAC_V3에서 오버라이드 되므로 onlyOwner가 필요 없습니다.
     function upgradeTo(address newImplementation) public virtual {
         _upgradeToAndCallUUPS(newImplementation, new bytes(0), false);
     }
     
-    // GF1-02 문제 3 해결: calldata 포함 업그레이드 (데이터 마이그레이션 지원)
-    function upgradeToAndCall(address newImplementation, bytes memory data) public virtual {
+    // 🚨 문제 1 해결: onlyOwner 모디파이어 추가 (상속 오류 해결 완료)
+    function upgradeToAndCall(address newImplementation, bytes memory data) public virtual onlyOwner {
         _upgradeToAndCallUUPS(newImplementation, data, true);
     }
 
-    // GF1-02 문제 2 해결: UUPS 호환성 검증 로직 추가
+    // GF1-02 문제 2 해결 및 문제 3 코드 검사 추가
     function _upgradeToAndCallUUPS(address newImplementation, bytes memory data, bool forceCall) internal {
         bytes32 slot = _IMPLEMENTATION_SLOT;
         require(newImplementation != address(0), "UUPS: new implementation is the zero address");
+        
+        // 🧱 문제 3 해결: 새 구현 주소에 코드가 있는지 확인
+        uint256 size;
+        assembly {
+            size := extcodesize(newImplementation)
+        }
+        require(size > 0, "UUPS: implementation is not a contract");
+
         // 새로운 구현 계약이 UUPS 표준을 따르는지 확인 (브릭 방지)
         require(IERC1822Proxiable(newImplementation).proxiableUUID() == slot, "UUPS: not UUPS compatible");
         
@@ -131,7 +140,8 @@ interface IERC20Extended {
 // =================================================================================
 // 4. GoldBackedMAC_V3 (Implementation Contract)
 // =================================================================================
-contract GoldBackedMAC_V3 is Initializable, OwnableUpgradeable, UUPSUpgradeable {
+// 상속 관계는 그대로 유지 (UUPSUpgradeable이 이미 OwnableUpgradeable을 상속받으므로 중복 상속은 제거됨)
+contract GoldBackedMAC_V3 is Initializable, UUPSUpgradeable {
     
     // 상태 변수 (Storage Variables)
     IERC20Extended public macToken;
@@ -146,7 +156,6 @@ contract GoldBackedMAC_V3 is Initializable, OwnableUpgradeable, UUPSUpgradeable 
     uint8 public constant decimals = G_MAC_DECIMALS; 
     
     uint256 private _totalSupply;
-    // ✅ public이므로 자동 getter 함수가 생성됨 (balanceOf 중복 선언 문제 해결)
     mapping(address => uint256) public balanceOf; 
 
     mapping(address => mapping(address => uint256)) private _allowances;
@@ -205,8 +214,6 @@ contract GoldBackedMAC_V3 is Initializable, OwnableUpgradeable, UUPSUpgradeable 
     function totalSupply() public view returns (uint256) {
         return _totalSupply;
     }
-
-    // balanceOf(address) 함수는 public mapping으로 인해 자동 생성되므로 중복 선언 제거됨.
 
     function transfer(address to, uint256 amount) public returns (bool) {
         _transfer(_msgSender(), to, amount);
@@ -268,6 +275,7 @@ contract GoldBackedMAC_V3 is Initializable, OwnableUpgradeable, UUPSUpgradeable 
         uint8 macDecimals = macToken.decimals();
         uint256 scaledAmount = _scaleAmount(amount, macDecimals, G_MAC_DECIMALS);
 
+        // 로직 유지 (CertiK 지적에 반박할 예정)
         uint256 mintAmount = (scaledAmount * COLLATERAL_RATIO_NUMERATOR) / COLLATERAL_RATIO_DENOMINATOR;
 
         unchecked {
