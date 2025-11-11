@@ -39,6 +39,9 @@ abstract contract Initializable {
         _;
         _initializing = isInitializing;
     }
+    
+    // 🌟 GF1-04 최종 해결: Initializable에도 __gap 추가
+    uint256[50] private __gap;
 }
 
 abstract contract OwnableUpgradeable is Context, Initializable {
@@ -67,6 +70,9 @@ abstract contract OwnableUpgradeable is Context, Initializable {
         _owner = newOwner;
         emit OwnershipTransferred(oldOwner, newOwner);
     }
+    
+    // 🌟 GF1-04 최종 해결: OwnableUpgradeable에도 __gap 추가
+    uint256[50] private __gap;
 }
 
 // ⚠️ 상속 구조 수정: OwnableUpgradeable 상속 추가! (오류 해결)
@@ -84,12 +90,11 @@ abstract contract UUPSUpgradeable is Initializable, IERC1822Proxiable, OwnableUp
     }
 
     // GF1-02 문제 3 해결: calldata 없이 업그레이드
-    // upgradeTo는 GoldBackedMAC_V3에서 오버라이드 되므로 onlyOwner가 필요 없습니다.
     function upgradeTo(address newImplementation) public virtual {
         _upgradeToAndCallUUPS(newImplementation, new bytes(0), false);
     }
     
-    // 🚨 문제 1 해결: onlyOwner 모디파이어 추가 (상속 오류 해결 완료)
+    // 🚨 문제 1 해결: onlyOwner 모디파이어 추가
     function upgradeToAndCall(address newImplementation, bytes memory data) public virtual onlyOwner {
         _upgradeToAndCallUUPS(newImplementation, data, true);
     }
@@ -140,7 +145,6 @@ interface IERC20Extended {
 // =================================================================================
 // 4. GoldBackedMAC_V3 (Implementation Contract)
 // =================================================================================
-// 상속 관계는 그대로 유지 (UUPSUpgradeable이 이미 OwnableUpgradeable을 상속받으므로 중복 상속은 제거됨)
 contract GoldBackedMAC_V3 is Initializable, UUPSUpgradeable {
     
     // 상태 변수 (Storage Variables)
@@ -160,7 +164,7 @@ contract GoldBackedMAC_V3 is Initializable, UUPSUpgradeable {
 
     mapping(address => mapping(address => uint256)) private _allowances;
     
-    // GF1-04 수정: Storage Gap
+    // GF1-04 수정: Storage Gap (여기도 유지)
     uint256[50] private __gap;
 
     // 이벤트 정의
@@ -190,7 +194,6 @@ contract GoldBackedMAC_V3 is Initializable, UUPSUpgradeable {
     // GF1-02 문제 1 해결: upgradeTo 오버라이드 시, 핵심 업그레이드 로직 호출
     function upgradeTo(address newImplementation) public override onlyOwner {
         _authorizeUpgrade(newImplementation);
-        // _upgradeToAndCallUUPS를 명시적으로 호출해야 Implementation Slot이 업데이트됩니다.
         _upgradeToAndCallUUPS(newImplementation, new bytes(0), false);
     }
     
@@ -275,8 +278,8 @@ contract GoldBackedMAC_V3 is Initializable, UUPSUpgradeable {
         uint8 macDecimals = macToken.decimals();
         uint256 scaledAmount = _scaleAmount(amount, macDecimals, G_MAC_DECIMALS);
 
-        // 로직 유지 (CertiK 지적에 반박할 예정)
-        uint256 mintAmount = (scaledAmount * COLLATERAL_RATIO_NUMERATOR) / COLLATERAL_RATIO_DENOMINATOR;
+        // 🌟 최종 수정: Mint 로직을 DENOMINATOR / NUMERATOR (10/15)로 수정!
+        uint256 mintAmount = (scaledAmount * COLLATERAL_RATIO_DENOMINATOR) / COLLATERAL_RATIO_NUMERATOR;
 
         unchecked {
             balanceOf[_msgSender()] += mintAmount;
@@ -291,6 +294,7 @@ contract GoldBackedMAC_V3 is Initializable, UUPSUpgradeable {
         require(amount > 0, "Amount must be greater than zero");
         require(balanceOf[_msgSender()] >= amount, "Insufficient G-MAC balance");
         
+        // Redemption은 그대로 NUMERATOR / DENOMINATOR (15/10) 유지
         uint256 collateralToReturnScaled = (amount * COLLATERAL_RATIO_NUMERATOR) / COLLATERAL_RATIO_DENOMINATOR;
         
         uint8 macDecimals = macToken.decimals();
@@ -307,5 +311,6 @@ contract GoldBackedMAC_V3 is Initializable, UUPSUpgradeable {
         emit Transfer(_msgSender(), address(0), amount);
     }
 }
+
 
 
