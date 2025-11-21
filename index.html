@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>G-MAC Solutions: CertiK Audited & 4-Year Locked Protocol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7fafc; }
+        .card { background-color: white; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .badge-success { background-color: #d1fae5; color: #059669; }
+        .badge-warning { background-color: #fef3c7; color: #d97706; }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-2">G-MAC (Gold-Backed MyAwesomeCoin)</h1>
+            <p class="text-xl text-indigo-600">CertiK Audited Core & 4-Year Founder Lockup</p>
+        </header>
+
+        <!-- 프로젝트 개요 -->
+        <section class="card p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">🌟 프로젝트 개요 (Overview)</h2>
+            <p class="text-gray-700 mb-4">G-MAC은 **MyAwesomeCoin (MAC)**을 담보로 활용하여 **150% 초과 담보 비율**로 G-MAC 토큰을 발행하고 소각하는 이더리움 기반의 담보형 스테이블 토큰 프로토콜입니다. 목표는 금 기반 자산에 대한 탈중앙화된 접근성을 제공하는 것입니다.</p>
+            
+            <div class="space-y-1 text-gray-600">
+                <p>• 토큰 이름: Gold-Backed MyAwesomeCoin (G-MAC)</p>
+                <p>• 토큰 심볼: G-MAC</p>
+                <p>• 표준: ERC-20 (업그레이드 가능 UUPS 패턴)</p>
+                <p>• 담보 자산: MyAwesomeCoin (MAC Token)</p>
+            </div>
+        </section>
+
+        <!-- 핵심 메커니즘 & 감사 상태 -->
+        <section class="card p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">⚙️ 핵심 메커니즘 (Core Mechanism) - V3</h2>
+            <p class="text-gray-700 mb-4">핵심 로직은 **GoldBackedMAC_V3.sol** 계약에 구현되어 있으며, **1.5:1 (150% 초과 담보)** 비율로 설정되어 있습니다. (1.5 MAC 당 1 G-MAC 발행).</p>
+
+            <div class="mb-6">
+                <h3 class="text-xl font-medium text-gray-700 mb-2">🛡️ 보안 및 감사 상태 (Audit Status)</h3>
+                <div class="flex items-center space-x-4">
+                    <span class="badge-success px-3 py-1 text-sm font-semibold">감사 기관: CertiK</span>
+                    <span class="badge-success px-3 py-1 text-sm font-semibold">코드 상태: CertiK Final Version (V3)</span>
+                    <span class="badge-success px-3 py-1 text-sm font-semibold">감사 결과: 모든 Major/Critical 지적 사항 해결 (4/4 Resolved)</span>
+                </div>
+            </div>
+
+            <!-- Vesting (4년 락업) -->
+            <div class="p-4 bg-indigo-50 rounded-lg">
+                <h3 class="text-xl font-medium text-indigo-700 mb-2 flex items-center">
+                    <span class="mr-2 text-2xl">🔒</span>팀 지분 락업 (Vesting Status) - VC 표준
+                </h3>
+                <p class="text-indigo-700 mb-2">G-MAC 팀은 **VC 표준**에 따라 장기적인 헌신을 약속합니다.</p>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full text-sm text-gray-600">
+                        <thead class="text-indigo-600">
+                            <tr>
+                                <th class="py-2 text-left">항목</th>
+                                <th class="py-2 text-left">값</th>
+                                <th class="py-2 text-left">전략적 의미</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="py-1">락업된 수량</td><td class="py-1">총 **100,000 G-MAC**</td><td class="py-1 text-xs text-gray-500">팀 지분의 투명한 초기 락업 증명.</td></tr>
+                            <tr><td class="py-1">Vesting 계약 주소</td><td class="py-1 text-xs break-all">`0xBEEAfc6388D6BdF53efe53BCF01127A4eba4a027`</td><td class="py-1 text-xs text-gray-500">지분 락업 금고의 공식 주소.</td></tr>
+                            <tr><td class="py-1 font-bold">Vesting 스케줄</td><td class="py-1 font-bold text-red-600">1년 Cliff (절벽) 후 4년 Linear Vesting</td><td class="py-1 text-xs text-gray-500">**총 5년간**의 의무 기간 (VC의 필수 요구조건). </td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Etherscan 상태 및 계약 정보 -->
+        <section class="card p-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">🔗 계약 정보 및 검증 (Details)</h2>
+            <div class="mb-4">
+                <h3 class="text-xl font-medium text-gray-700 mb-2">⚠️ Etherscan 검증 상태 (Verification Status)</h3>
+                <p class="text-gray-700 mb-2">저희는 코드 투명성을 최우선으로 생각합니다. 현재 Etherscan 검증은 컴파일러 최적화 값 불일치로 인해 미확인 상태이나, **CertiK 감사를 통해 100% 코드 일치함이 확인**되었습니다. 이 문제는 코드의 오류나 보안 문제가 아닙니다.</p>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-sm text-gray-600">
+                    <thead class="text-gray-500">
+                        <tr>
+                            <th class="py-2 text-left">항목</th>
+                            <th class="py-2 text-left">값</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="py-1">G-MAC 컨트랙트 주소 (Testnet)</td><td class="py-1 text-xs break-all">`0xcd014ea2f6bb4d008a9f2fce571a8d4866565a80`</td></tr>
+                        <tr><td class="py-1">사용된 Solidity 버전</td><td class="py-1">`^0.8.30`</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <footer class="text-center mt-8 text-sm text-gray-500">
+            © 2025 G-MAC Solutions. All Rights Reserved.
+        </footer>
+    </div>
+</body>
+</html>
