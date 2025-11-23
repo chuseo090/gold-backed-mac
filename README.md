@@ -1,127 +1,127 @@
 G-MAC (Gold-Backed MyAwesomeCoin) Core Contract 🌟
 
-🌟 프로젝트 개요 (Overview)
+🌟 Project Overview
 
-G-MAC은 이더리움 기반의 담보형 스테이블 토큰 프로토콜입니다. 저희는 **MyAwesomeCoin (MAC)**을 담보(Collateral)로 활용하여 150% 초과 담보 비율로 G-MAC 토큰을 발행하고 소각합니다. 이는 사용자에게 금 기반 자산에 대한 탈중앙화된 접근성을 제공하는 것을 목표로 합니다.
+G-MAC is an Ethereum-based collateralized stablecoin protocol. We utilize MyAwesomeCoin (MAC) as collateral to issue and burn G-MAC tokens with a 150% overcollateralization ratio. Our goal is to provide decentralized access to gold-backed assets.
 
-토큰 이름: Gold-Backed MyAwesomeCoin (G-MAC)
+Token Name: Gold-Backed MyAwesomeCoin (G-MAC)
 
-토큰 심볼: G-MAC
+Token Symbol: G-MAC
 
-표준: ERC-20 (업그레이드 가능 UUPS 패턴)
+Standard: ERC-20 (Upgradeable UUPS Pattern)
 
-담보 자산: MyAwesomeCoin (MAC Token)
+Collateral Asset: MyAwesomeCoin (MAC Token)
 
-⚙️ 핵심 메커니즘 (Core Mechanism) - V3 (CertiK Final Version)
+⚙️ Core Mechanism - V3 (CertiK Final Version)
 
-G-MAC의 핵심 로직은 GoldBackedMAC_V3.sol 계약에 구현되어 있으며, 주요 기능은 다음과 같습니다.
+The core logic of G-MAC is implemented in the GoldBackedMAC_V3.sol contract.
 
-기능
+Function
 
-설명
+Description
 
-담보 자산 처리
+Collateral Asset Handling
 
 mint(uint256 amount)
 
-사용자가 MAC 토큰을 예치하고 G-MAC 토큰을 발행합니다.
+User deposits MAC tokens to issue G-MAC tokens.
 
-사용자가 제공한 MAC 토큰을 계약 주소로 전송 및 잠금.
+Transfers and locks user-provided MAC tokens to the contract address.
 
 redeem(uint256 amount)
 
-사용자가 G-MAC 토큰을 소각하고 잠겨있던 MAC 담보를 회수합니다.
+User burns G-MAC tokens to redeem locked MAC collateral.
 
-계약에 잠겨있는 MAC 토큰을 사용자에게 반환.
+Returns locked MAC tokens from the contract to the user.
 
-담보 비율 및 안정화 로직 (V3)
+Collateral Ratio and Stability Logic (V3)
 
-Final Ratio: 현재 $\text{COLLATERAL_RATIO}$는 **1.5:1 (150% 초과 담보)**로 설정되어 있습니다. (1.5 MAC 당 1 G-MAC 발행). 이 초과 담보 로직은 CertiK 감사를 통해 최종 확정되었습니다.
+Final Ratio: The $\text{COLLATERAL\_RATIO}$ is set to 1.5:1 (150% Overcollateralized). (1.5 MAC issues 1 G-MAC). This overcollateralization logic has been finally confirmed through the CertiK audit.
 
-🛡️ 보안 및 감사 상태 (Security and Audit Status) - 감사 완료!
+🛡️ Security and Audit Status - Audit Completed!
 
-G-MAC 팀은 보안을 최우선으로 생각하며, 최종 코드는 전문 보안 감사를 성공적으로 완료했습니다.
+The G-MAC team prioritizes security, and the final code has successfully completed a professional security audit.
 
-감사 기관: CertiK
+Audit Firm: CertiK
 
-코드 상태: CertiK Final Version (GoldBackedMAC_V3.sol)
+Code Status: CertiK Final Version (GoldBackedMAC_V3.sol)
 
-감사 결과: 모든 치명적 및 주요 지적 사항(Major/Critical Findings)이 수정되었으며, 특히 150% 초과 담보 로직과 업그레이드 패턴이 최종적으로 구현되었습니다.
+Audit Result: All Major/Critical Findings have been resolved, and specifically, the 150% overcollateralization logic and upgrade pattern have been successfully implemented.
 
-감사 보고서: 최종 보고서 발행 절차 진행 중이며, 완료되는 대로 이 저장소에 게시될 예정입니다.
+Audit Report: Final report issuance is in progress and will be posted to this repository upon completion.
 
-🔗 계약 및 투명성 정보 (Contract & Transparency Details)
+🔗 Contract and Transparency Details
 
-1. 코어 컨트랙트 정보
+1. Core Contract Information
 
-항목
+Item
 
-값
+Value
 
-용도 (투자자 설명)
+Implication (Investor Note)
 
-G-MAC 토큰 주소 (ERC-20)
+G-MAC Token Address (ERC-20)
 
 0xa97f5af62e5e227765e5eccbba7c3ade688342b6
 
-사용자가 거래하는 G-MAC 스테이블 토큰의 공식 주소입니다.
+The official address of the tradable G-MAC stable token.
 
-Proxy/Logic 컨트랙트 주소 (V3)
+Proxy/Logic Contract Address (V3)
 
 0xcd014ea2f6bb4d008a9f2fce571a8d4866565a80
 
-담보 관리 및 발행 로직이 구현된 컨트랙트 주소입니다.
+The contract where collateral management and issuance logic is implemented.
 
-사용된 Solidity 버전
+Solidity Version Used
 
 ^0.8.30
 
 -
 
-사용된 라이브러리
+Used Libraries
 
 OpenZeppelin (Context, Ownable, IERC20, UUPSUpgradeable)
 
-업그레이드 가능한 ERC-20 표준 구현에 사용되었습니다.
+Used to implement the upgradeable ERC-20 standard.
 
-2. 팀 지분 락업 (Vesting) 정보 - VC 표준
+2. Founder Lockup (Vesting) Information - VC Standard
 
-G-MAC 팀은 VC 표준에 따라 장기적인 헌신을 약속하며, 모든 팀 지분을 투명하게 락업했습니다.
-| 구분 | 주소/값 | 용도 (투자자 설명) |
+The G-MAC team commits to long-term dedication following VC standards, with all founder tokens transparently locked up.
+| Item | Address/Value | Implication (Investor Note) |
 | :--- | :--- | :--- |
-| Vesting 계약 주소 (금고) | 0xBEEAfc6388D6BdF53efe53BCF01127A4eba4a027 | 4년 락업 금고의 공식 주소. (소스 코드 검증 완료됨) |
-| G-MAC 토큰 주소 | 0xa97f5af62e5e227765e5eccbba7c3ade688342b6 | 락업된 G-MAC 토큰의 주소. |
-| Depositor/Beneficiary | 0xe6B2591d564d41d40d61010528D5555cEd391358 | 락업을 실행한 팀 지갑 주소. (투명성 증명) |
-| 락업된 수량 | 100,000 G-MAC | 총 $\mathbf{10}$만 G-MAC이 락업됨. |
-| Vesting 스케줄 | 1년 Cliff (절벽 기간) 후 $\mathbf{4}$년 Linear Vesting (선형 분배) | 총 $\mathbf{5}$년간의 의무 기간을 통한 장기 프로젝트 헌신 증명. |
+| Vesting Contract Address (Vault) | 0xBEEAfc6388D6BdF53efe53BCF01127A4eba4a027 | The official address of the 4-year lockup vault. (Source code verified) |
+| G-MAC Token Address | 0xa97f5af62e5e227765e5eccbba7c3ade688342b6 | The address of the locked G-MAC tokens. |
+| Depositor/Beneficiary | 0xe6B2591d564d41d40d61010528D5555cEd391358 | The team wallet address that executed the lockup. (Proof of transparency) |
+| Locked Amount | 100,000 G-MAC | A total of $\mathbf{100,000}$ G-MAC is locked up. |
+| Vesting Schedule | 1 year Cliff followed by $\mathbf{4}$ year Linear Vesting | Proof of $\mathbf{5}$ years total commitment (a mandatory VC requirement). |
 
-🛠️ 빌드 및 테스트 (Build and Test)
+🛠️ Build and Test
 
-필수 환경 (Prerequisites)
+Prerequisites
 
-Node.js (LTS 버전 권장)
+Node.js (LTS version recommended)
 
-Yarn 또는 npm
+Yarn or npm
 
-Hardhat 또는 Foundry (개발 환경에 맞춰 명시)
+Hardhat or Foundry (as defined by your development environment)
 
-설치 및 컴파일
+Installation and Compilation
 
-# 저장소 복제 (최종 버전)
+# Clone the repository (Final Version)
 git clone [https://github.com/chuseo090/gold-backed-mac](https://github.com/chuseo090/gold-backed-mac)
 cd gold-backed-mac
 
-# 의존성 설치
+# Install dependencies
 yarn install 
-# 또는
+# OR
 npm install
 
-# 컨트랙트 컴파일
+# Compile contracts
 npx hardhat compile
-# 또는 (Foundry 사용 시)
+# OR (if using Foundry)
 forge build
 
-# 테스트 실행 명령어
+# Run tests
 npx hardhat test
-# 또는 (Foundry 사용 시)
+# OR (if using Foundry)
 forge test
