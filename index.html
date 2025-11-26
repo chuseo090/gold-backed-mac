@@ -6,11 +6,12 @@
     <title>G-MAC Solutions: CertiK Audited & 4-Year Locked Protocol</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f7fafc; }
         .card { background-color: white; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
         .badge-success { background-color: #d1fae5; color: #059669; }
-        .badge-warning { background-color: #fef3c7; color: #d97706; }
+        .link-style { color: #4f46e5; font-weight: 600; text-decoration: underline; }
     </style>
 </head>
 <body class="p-4 sm:p-8">
@@ -20,86 +21,76 @@
             <p class="text-xl text-indigo-600">CertiK Audited Core & 4-Year Founder Lockup</p>
         </header>
 
-        <!-- Project Overview -->
+        <!-- Project Overview / Introduction -->
         <section class="card p-6 mb-8">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">🌟 Project Overview</h2>
-            <p class="text-gray-700 mb-4">G-MAC is an Ethereum-based collateralized stablecoin protocol. We utilize **MyAwesomeCoin (MAC)** as collateral to issue and burn G-MAC tokens with a **150% overcollateralization ratio**. Our goal is to provide decentralized access to gold-backed assets.</p>
+            <p class="text-gray-700 mb-4">G-MAC is an Ethereum-based collateralized stablecoin protocol. We utilize **MyAwesomeCoin (MAC)** as collateral to issue and burn G-MAC tokens with a **150% overcollateralization ratio**. Our goal is to provide decentralized access to gold-backed assets in the $\mathbf{\$3}$ Trillion RWA market.</p>
             
             <div class="space-y-1 text-gray-600">
                 <p>• Token Name: Gold-Backed MyAwesomeCoin (G-MAC)</p>
                 <p>• Token Symbol: G-MAC</p>
-                <p>• Standard: ERC-20 (Upgradeable UUPS Pattern)</p>
                 <p>• Collateral Asset: MyAwesomeCoin (MAC Token)</p>
             </div>
         </section>
 
-        <!-- Core Mechanism & Audit Status -->
-        <section class="card p-6 mb-8">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">⚙️ Core Mechanism - V3</h2>
-            <p class="text-gray-700 mb-4">The core logic is implemented in the **GoldBackedMAC_V3.sol** contract, set at a **1.5:1 (150% Overcollateralized)** ratio. (1.5 MAC issues 1 G-MAC).</p>
-
-            <div class="mb-6">
-                <h3 class="text-xl font-medium text-gray-700 mb-2">🛡️ Security and Audit Status</h3>
-                <div class="flex items-center space-x-4">
-                    <span class="badge-success px-3 py-1 text-sm font-semibold">Audit Firm: CertiK</span>
-                    <span class="badge-success px-3 py-1 text-sm font-semibold">Code Status: CertiK Final Version (V3)</span>
-                    <span class="badge-success px-3 py-1 text-sm font-semibold">Audit Result: All Major/Critical Findings Resolved (4/4)</span>
-                </div>
+        <!-- New: Launch & Social Links -->
+        <section class="card p-6 mb-8 bg-green-50">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">🔗 Official Launch Resources</h2>
+            <p class="text-lg font-medium text-gray-700 mb-3">All essential documents and social channels are linked below for public review and transparency.</p>
+            
+            <div class="flex flex-wrap gap-4 mb-6">
+                <!-- Whitepaper Link (Using Pitch Deck PDF URL as substitute) -->
+                <a href="[Drive Link to Pitch Deck PDF]" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg flex items-center shadow-lg transition duration-150">
+                    <i class="fas fa-file-pdf mr-2"></i> Whitepaper / Pitch Deck
+                </a>
+                <!-- Social Media Link -->
+                <a href="https://x.com/Goldbackedmac" target="_blank" class="bg-gray-800 hover:bg-black text-white font-bold py-2 px-4 rounded-lg flex items-center shadow-lg transition duration-150">
+                    <i class="fab fa-twitter mr-2"></i> Official X/Twitter
+                </a>
             </div>
-
-            <!-- Vesting (4-Year Lockup) -->
+            
+            <!-- RoadMap Section -->
+            <h3 class="text-xl font-semibold text-gray-800 mb-3 mt-4">🛣️ Roadmap & Stability (V4 Planning)</h3>
+            <ul class="list-disc list-inside text-gray-700 space-y-1">
+                <li>**V3 (Current Launch):** CertiK Audited Core Logic, 150% Overcollateralization, 4-Year Founder Lockup.</li>
+                <li>**V4 (Near Term):** Integration of Gold-Backed RWA collateral and an Advanced Liquidation Engine (maintaining stability even if ratio drops below 120%).</li>
+                <li>**Future Vision:** Decentralized acquisition of major industrial assets (e.g., Volkswagen).</li>
+            </ul>
+        </section>
+        
+        <!-- Audit Status - VC Standard Table -->
+        <section class="card p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">🛡️ CertiK Audit & V3 Security</h2>
             <div class="p-4 bg-indigo-50 rounded-lg">
                 <h3 class="text-xl font-medium text-indigo-700 mb-2 flex items-center">
-                    <span class="mr-2 text-2xl">🔒</span>Founder Lockup (Vesting Status) - VC Standard
+                    <span class="mr-2 text-2xl">🔒</span>Founder Lockup (Vesting Status)
                 </h3>
-                <p class="text-indigo-700 mb-2">The G-MAC team commits to long-term dedication following VC standards.</p>
                 <div class="overflow-x-auto">
                     <table class="min-w-full text-sm text-gray-600">
-                        <thead class="text-indigo-600">
-                            <tr>
-                                <th class="py-2 text-left">Item</th>
-                                <th class="py-2 text-left">Value</th>
-                                <th class="py-2 text-left">Strategic Implication</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr><td class="py-1">Locked Amount</td><td class="py-1">Total **100,000 G-MAC**</td><td class="py-1 text-xs text-gray-500">Transparent initial lockup proof of founder commitment.</td></tr>
-                            <tr><td class="py-1">Vesting Contract Address</td><td class="py-1 text-xs break-all">`0xBEEAfc6388D6BdF53efe53BCF01127A4eba4a027`</td><td class="py-1 text-xs text-gray-500">Official address of the 4-year lockup vault (V3 Logic).</td></tr>
-                            <tr><td class="py-1 font-bold">Vesting Schedule</td><td class="py-1 font-bold text-red-600">1 year Cliff followed by 4 year Linear Vesting</td><td class="py-1 text-xs text-gray-500">Total 5-year commitment (a mandatory VC requirement).</td></tr>
-                        </tbody>
+                        <!-- Simplified Vesting Table for Conciseness -->
+                        <tr><td class="py-1">Audit Firm</td><td class="py-1"><span class="badge-success px-3 py-1 text-sm font-semibold">CertiK</span></td><td class="py-1 text-xs text-gray-500">Industry Leader.</td></tr>
+                        <tr><td class="py-1">Code Status</td><td class="py-1">V3 Final Version</td><td class="py-1 text-xs text-gray-500">All Major/Critical Findings Resolved (4/4).</td></tr>
+                        <tr><td class="py-1 font-bold">Vesting Schedule</td><td class="py-1 font-bold text-red-600">1 year Cliff + 4 year Linear Vesting</td><td class="py-1 text-xs text-gray-500">Total 5-year commitment (Mandatory VC Requirement).</td></tr>
                     </table>
                 </div>
             </div>
+            
+            <h3 class="text-xl font-medium text-gray-700 mt-6 mb-2">🔗 V3 Contract Details</h3>
+            <p class="text-gray-700 mb-2">The final V3 Logic Contract code is **Contract Source Code Verified (Exact Match)** on Etherscan, confirming full code parity with the CertiK Audited V3 protocol.</p>
+            <table class="min-w-full text-sm text-gray-600">
+                <thead><tr><th>Item</th><th>Value</th></tr></thead>
+                <tbody>
+                    <tr><td>G-MAC Token Address (Proxy)</td><td class="py-1 text-xs break-all">`0xa97f5af62e5e227765e5eccbba7c3ade688342b6`</td></tr>
+                    <tr><td>Proxy/Logic Contract Address (V3)</td><td class="py-1 text-xs break-all text-red-600">`0x7b1C46CA6C5C36F13910AD2eb62622934B8b5eE8`</td></tr>
+                </tbody>
+            </table>
         </section>
 
-        <!-- Contract Details -->
-        <section class="card p-6">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">🔗 Contract Details & Verification</h2>
-            <div class="mb-4">
-                <h3 class="text-xl font-medium text-gray-700 mb-2">✅ Etherscan Verification Status</h3>
-                <p class="text-gray-700 mb-2">We prioritize code transparency. The final V3 Logic Contract code is **Contract Source Code Verified (Exact Match)** on Etherscan, confirming full code parity with the CertiK Audited V3 protocol.</p>
-            </div>
-            
-            <div class="overflow-x-auto">
-                <table class="min-w-full text-sm text-gray-600">
-                    <thead class="text-gray-500">
-                        <tr>
-                            <th class="py-2 text-left">Item</th>
-                            <th class="py-2 text-left">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="py-1">G-MAC Token Address (ERC-20)</td><td class="py-1 text-xs break-all">`0xa97f5af62e5e227765e5eccbba7c3ade688342b6`</td></tr>
-                        <tr><td class="py-1 font-bold">Proxy/Logic Contract Address (V3)</td><td class="py-1 text-xs break-all font-bold text-red-600">`0x7b1C46CA6C5C36F13910AD2eb62622934B8b5eE8`</td></tr>
-                        <tr><td class="py-1">Solidity Version Used</td><td class="py-1">`^0.8.30`</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-        
         <footer class="text-center mt-8 text-sm text-gray-500">
             © 2025 G-MAC Solutions. All Rights Reserved.
         </footer>
     </div>
 </body>
+</html>
+
 
