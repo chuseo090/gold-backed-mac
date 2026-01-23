@@ -4,150 +4,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>G-MAC Solutions: CertiK Audited & V3 Sepolia Verified</title>
+    <!-- 1. 핵심 인프라 스크립트: Tailwind CSS 로드 -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. 프리미엄 폰트 및 아이콘 에셋 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; }
-        .card { background-color: white; border-radius: 1rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
-        .badge-sepolia { background-color: #fef3c7; color: #92400e; border: 1px solid #f59e0b; }
-        .icon-box { background-color: #e0f2fe; color: #0f172a; padding: 10px; border-radius: 0.5rem; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .card { background-color: white; border-radius: 1.25rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); transition: all 0.3s ease; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 25px 30px -5px rgba(0, 0, 0, 0.08); }
+        .badge-sepolia { background-color: #fffbeb; color: #92400e; border: 1px solid #f59e0b; }
+        .gradient-text { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .status-check { color: #10b981; }
     </style>
 </head>
-<body class="p-4 sm:p-8">
+<body class="p-4 md:p-12 text-slate-900">
     <div class="max-w-5xl mx-auto">
-        <header class="text-center mb-10">
-            <div class="inline-block px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest badge-sepolia mb-4">
+        <!-- HEADER: 제국의 선포 -->
+        <header class="text-center mb-16">
+            <div class="inline-block px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest badge-sepolia mb-6">
                 Official V3 Core: Sepolia Testnet Verified
             </div>
-            <h1 class="text-5xl font-extrabold text-gray-900 mb-2 tracking-tight">G-MAC <span class="text-indigo-600">(Gold-Backed MAC)</span></h1>
-            <p class="text-2xl text-indigo-700 font-semibold">CertiK Audited V3 Core & Institutionally Ready Infrastructure</p>
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-4 tracking-tight">
+                G-MAC <span class="gradient-text">(Gold-Backed MAC)</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-500 font-medium">CertiK Audited V3 Core & Institutionally Ready Infrastructure</p>
         </header>
 
-        <!-- OFFICIAL LAUNCH RESOURCES -->
-        <section class="card p-6 mb-8 bg-indigo-50 border-l-8 border-indigo-600">
-            <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2 flex items-center">
-                <i class="fas fa-handshake mr-3 text-indigo-600"></i> Official Launch Resources & Quick Links
+        <!-- SECTION 1: 공식 리소스 및 증거 (블랙록 타격용 링크) -->
+        <section class="card p-8 mb-10 border border-indigo-100 bg-white">
+            <h2 class="text-2xl font-bold mb-6 flex items-center text-slate-800">
+                <i class="fas fa-link mr-3 text-indigo-600"></i> Official Launch Resources & Proofs
             </h2>
-            <p class="text-lg font-medium text-gray-700 mb-6">
-                All essential documents and verified smart contracts are deployed on the <strong>Sepolia Network</strong> for security auditing and public transparency.
+            <p class="text-slate-600 mb-8 leading-relaxed">
+                All essential technical documents and verified smart contracts are deployed on the <strong>Sepolia Network</strong> for comprehensive institutional auditing and total public transparency.
             </p>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <!-- Whitepaper/Pitch Deck -->
-                <a href="https://drive.google.com/file/d/1QxIE70k-8KCj0UpVobhl4RipGLa6PWGy/view?usp=sharing" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg text-center text-sm shadow-lg transition duration-150 flex flex-col items-center justify-center">
-                    <i class="fas fa-file-pdf mb-2 text-xl"></i> 
-                    <span>Whitepaper / Pitch Deck</span>
+                <a href="https://docs.google.com/document/d/1KrFQSfEHHvxVYDP59bJ9aMR0qhUXc5Kvya0jtK5WJss/edit?usp=sharing" target="_blank" class="bg-indigo-600 hover:bg-indigo-700 text-white p-5 rounded-xl text-center transition duration-200 flex flex-col items-center group">
+                    <i class="fas fa-file-invoice mb-3 text-2xl group-hover:scale-110 transition"></i>
+                    <span class="font-bold text-sm">Strategic Pitch Deck</span>
                 </a>
-                <!-- Official X/Twitter -->
-                <a href="https://x.com/Goldbackedmac" target="_blank" class="bg-gray-800 hover:bg-black text-white font-bold py-3 px-4 rounded-lg text-center text-sm shadow-lg transition duration-150 flex flex-col items-center justify-center">
-                    <i class="fab fa-twitter mb-2 text-xl"></i>
-                    <span>Official X/Twitter</span>
+                <!-- Official X -->
+                <a href="https://x.com/Goldbackedmac" target="_blank" class="bg-slate-900 hover:bg-black text-white p-5 rounded-xl text-center transition duration-200 flex flex-col items-center group">
+                    <i class="fab fa-x-twitter mb-3 text-2xl group-hover:scale-110 transition"></i>
+                    <span class="font-bold text-sm">Official X/Twitter</span>
                 </a>
-                <!-- Sepolia Etherscan V3 Logic -->
-                <a href="https://sepolia.etherscan.io/address/0x7b1C46CA6C5C36F13910AD2eb62622934B8b5eE8#code" target="_blank" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-lg text-center text-sm shadow-lg transition duration-150 flex flex-col items-center justify-center border-2 border-amber-200">
-                    <i class="fas fa-microchip mb-2 text-xl"></i>
-                    <span class="leading-tight">V3 Logic Contract<br><small class="opacity-80 text-xs">(Sepolia Verified)</small></span>
+                <!-- Etherscan: 블랙록이 7번 클릭한 그 로직 -->
+                <a href="https://sepolia.etherscan.io/address/0x7b1C46CA6C5C36F13910AD2eb62622934B8b5eE8#code" target="_blank" class="bg-amber-500 hover:bg-amber-600 text-white p-5 rounded-xl text-center transition duration-200 flex flex-col items-center group">
+                    <i class="fas fa-code mb-3 text-2xl group-hover:scale-110 transition"></i>
+                    <span class="font-bold text-sm leading-tight">V3 Logic Contract<br><small class="text-[10px] opacity-80">(Sepolia Verified)</small></span>
                 </a>
-                <!-- CertiK Link -->
-                <a href="https://www.certik.com/projects/g-mac-solutions" target="_blank" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg text-center text-sm shadow-lg transition duration-150 flex flex-col items-center justify-center">
-                    <i class="fas fa-shield-alt mb-2 text-xl"></i>
-                    <span>CertiK Audit Report</span>
+                <!-- CertiK Status -->
+                <a href="https://www.certik.com/projects/g-mac-solutions" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white p-5 rounded-xl text-center transition duration-200 flex flex-col items-center group border-b-4 border-emerald-800">
+                    <i class="fas fa-shield-halved mb-3 text-2xl group-hover:scale-110 transition"></i>
+                    <span class="font-bold text-sm">CertiK Audit Status</span>
                 </a>
             </div>
         </section>
 
-        <!-- CORE MECHANISM & FEATURES -->
-        <section class="card p-8 mb-8">
-            <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-3">2. Core Mechanism & Product Features</h2>
-            
-            <p class="text-gray-700 mb-6 leading-relaxed text-lg">
-                G-MAC is an advanced collateralized stablecoin platform. Our V3 logic focuses on maintaining a <strong>rigid 150% collateral ratio</strong>, establishing a benchmark for decentralized stability on the Sepolia Network before Mainnet migration.
-            </p>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- FEATURE 1: MINTING -->
-                <div class="bg-blue-50 p-6 rounded-xl border border-blue-200">
-                    <h3 class="text-xl font-bold text-blue-800 mb-3 flex items-center"><i class="fas fa-coins mr-2"></i> Minting (Issue G-MAC)</h3>
-                    <p class="text-gray-700 mb-4">Users deposit MAC Token collateral into the audited V3 vault to mint G-MAC.</p>
-                    <ul class="text-sm text-gray-600 space-y-2">
-                        <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> <strong>Ratio:</strong> 1.5 MAC : 1 G-MAC (150%)</li>
-                        <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> <strong>Execution:</strong> Real-time On-chain Minting</li>
-                        <li class="flex items-center"><i class="fas fa-check-circle text-blue-500 mr-2"></i> <strong>Status:</strong> V3 Core Audited Logic</li>
-                    </ul>
-                </div>
-                <!-- FEATURE 2: REDEEM -->
-                <div class="bg-red-50 p-6 rounded-xl border border-red-200">
-                    <h3 class="text-xl font-bold text-red-800 mb-3 flex items-center"><i class="fas fa-fire-alt mr-2"></i> Redemption (Burn G-MAC)</h3>
-                    <p class="text-gray-700 mb-4">Users burn G-MAC to redeem their underlying collateralized assets instantly.</p>
-                    <ul class="text-sm text-gray-600 space-y-2">
-                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-2"></i> <strong>Logic:</strong> Maintains 1.5:1 ratio upon exit</li>
-                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-2"></i> <strong>Security:</strong> Anti-Reentrancy Protected</li>
-                        <li class="flex items-center"><i class="fas fa-check-circle text-red-500 mr-2"></i> <strong>Audit:</strong> Zero High-Severity Risks</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- ROADMAP AND V4 STABILITY -->
-        <section class="card p-8 mb-8">
-            <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-3">3. Strategic Roadmap & Ecosystem Stability</h2>
-            <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center"><i class="fas fa-road mr-2"></i> From V3 (Sepolia) to V4 (Mainnet)</h3>
-            <div class="space-y-4">
-                <div class="flex items-start">
-                    <div class="bg-indigo-600 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-4 shrink-0">3</div>
-                    <div>
-                        <p class="font-bold text-gray-900">V3 (Current Phase - Sepolia):</p>
-                        <p class="text-gray-700">CertiK Audited Core Logic, 150% Overcollateralization, and 4-Year Founder Lockup (Vesting) fully active on the Sepolia Network for institutional verification.</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <div class="bg-gray-400 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-4 shrink-0 text-sm">Main</div>
-                    <div>
-                        <p class="font-bold text-gray-900">V4 (Near Term - Mainnet Launch):</p>
-                        <p class="text-gray-700">Integration of <strong>Gold-Backed RWA</strong> (Real World Assets) to solidify the decentralized acquisition of large-scale industrial assets ($3,000 Trillion Risk Solution).</p>
-                    </div>
-                </div>
-                <div class="flex items-start">
-                    <div class="bg-gray-400 text-white rounded-full h-8 w-8 flex items-center justify-center font-bold mr-4 shrink-0">4</div>
-                    <div>
-                        <p class="font-bold text-gray-900">V4 Advanced Liquidation Engine:</p>
-                        <p class="text-gray-700">Next-gen liquidation logic that automatically triggers collateral auctions if ratios hit critical thresholds (120%), ensuring total market stability.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TEAM AND CONTACT -->
-        <section class="card p-8 mb-8 bg-gray-50 border-t-4 border-indigo-200">
-            <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-3">4. Leadership & Institutional Contact</h2>
-            
+        <!-- SECTION 2: 핵심 메커니즘 (수학적 무결성) -->
+        <section class="card p-8 mb-10 border border-slate-200">
+            <h2 class="text-2xl font-bold mb-8 text-slate-800 border-b pb-4">2. Institutional Core Mechanism</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- TEAM -->
-                <div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-crown mr-2 text-indigo-600"></i> Founder & Execution</h3>
-                    <ul class="space-y-3">
-                        <li class="text-gray-700"><span class="font-bold">CEO/Founder:</span> Hyunseo Chu (Lead Architect)</li>
-                        <li class="text-gray-700"><span class="font-bold">Security Commitment:</span> $100\%$ Audit Transparency</li>
-                        <li class="text-gray-700"><span class="font-bold">Founder Lockup:</span> 4-Year Vesting (1-Year Cliff)</li>
+                <!-- Minting -->
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <h3 class="text-lg font-bold text-indigo-700 mb-4 flex items-center">
+                        <i class="fas fa-coins mr-2"></i> Minting Protocol (Issue G-MAC)
+                    </h3>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex justify-between border-b pb-2"><span>Collateral Ratio</span> <strong class="text-slate-900">150% (Rigid)</strong></li>
+                        <li class="flex justify-between border-b pb-2"><span>Asset Parity</span> <strong class="text-slate-900 text-xs">1.5 MAC : 1 G-MAC</strong></li>
+                        <li class="flex justify-between"><span>Execution</span> <strong class="status-check font-bold">Real-time On-chain</strong></li>
                     </ul>
                 </div>
-                <!-- CONTACT -->
-                <div>
-                    <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-paper-plane mr-2 text-indigo-600"></i> Inquiries</h3>
-                    <p class="text-gray-700 mb-4">For M&A partnership or institutional investment inquiries:</p>
-                    <ul class="space-y-2">
-                        <li class="flex items-center text-indigo-700 font-semibold"><i class="fas fa-at mr-2"></i> chuseo090@gmail.com</li>
-                        <li class="flex items-center text-gray-700"><i class="fab fa-x-twitter mr-2"></i> @Goldbackedmac</li>
-                        <li class="text-xs text-gray-500 italic mt-2">Professional inquiries receive a response within 24 hours.</li>
+                <!-- Redemption -->
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <h3 class="text-lg font-bold text-rose-700 mb-4 flex items-center">
+                        <i class="fas fa-fire mr-2"></i> Redemption Protocol (Burn)
+                    </h3>
+                    <ul class="space-y-3 text-sm text-slate-600">
+                        <li class="flex justify-between border-b pb-2"><span>Withdrawal Ratio</span> <strong class="text-slate-900">1.5:1 Maintained</strong></li>
+                        <li class="flex justify-between border-b pb-2"><span>Security Logic</span> <strong class="text-slate-900">Anti-Reentrancy Locked</strong></li>
+                        <li class="flex justify-between"><span>Audit Result</span> <strong class="status-check font-bold">Zero High-Risk Found</strong></li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <footer class="text-center mt-10 text-sm text-gray-400 pb-10">
-            © 2025 G-MAC Solutions. Verified On-Chain Infrastructure.
+        <!-- SECTION 3: 전략적 로드맵 (V4 $3,000T 제어 예고) -->
+        <section class="card p-8 mb-10 border border-indigo-100 bg-gradient-to-br from-white to-indigo-50">
+            <h2 class="text-2xl font-bold mb-8 text-slate-800">3. Strategic Roadmap: V3 to V4 Evolution</h2>
+            <div class="space-y-6">
+                <div class="flex gap-6">
+                    <div class="h-10 w-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold shrink-0 shadow-lg shadow-indigo-200">3</div>
+                    <div>
+                        <h4 class="font-bold text-indigo-900">Current Phase: V3 Institutional Validation</h4>
+                        <p class="text-slate-600 text-sm">CertiK verified logic, 150% over-collateralization, and 4-Year Absolute Hard Lock (Vesting) fully active on Sepolia.</p>
+                    </div>
+                </div>
+                <div class="flex gap-6">
+                    <div class="h-10 w-10 rounded-full bg-slate-300 text-white flex items-center justify-center font-bold shrink-0">4</div>
+                    <div>
+                        <h4 class="font-bold text-slate-800">Upcoming: V4 Mainnet & Gold-Backed RWA Integration</h4>
+                        <p class="text-slate-600 text-sm">Activation of the <strong>Global Systemic Risk-Balancing Engine</strong> designed for $3,000 Trillion industrial risk mitigation via Gold-Backed Real World Assets.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: 리더십 및 연락처 (지배자의 명함) -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+            <!-- Leadership -->
+            <div class="card p-8 border border-slate-200">
+                <h2 class="text-xl font-bold mb-6 text-slate-800 flex items-center"><i class="fas fa-crown mr-2 text-indigo-600"></i> Leadership</h2>
+                <div class="space-y-4">
+                    <div>
+                        <p class="text-xs text-slate-400 uppercase font-bold tracking-widest">Lead Architect / CEO</p>
+                        <p class="text-lg font-bold text-slate-800">Hyeonseo Chu</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-400 uppercase font-bold tracking-widest">Founder Commitment</p>
+                        <p class="text-slate-700 font-semibold">4-Year Absolute Hard Lock (No Liquidity)</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Institutional Contact: ceo@gmac-solutions.com -->
+            <div class="card p-8 border border-indigo-200 bg-indigo-900 text-white">
+                <h2 class="text-xl font-bold mb-6 flex items-center"><i class="fas fa-paper-plane mr-2 text-indigo-400"></i> Institutional Inquiries</h2>
+                <div class="space-y-6">
+                    <a href="mailto:ceo@gmac-solutions.com" class="block group">
+                        <p class="text-xs text-indigo-300 uppercase font-bold tracking-widest mb-1">Official Direct Email</p>
+                        <p class="text-xl font-bold group-hover:text-indigo-200 transition underline underline-offset-4">ceo@gmac-solutions.com</p>
+                    </a>
+                    <div>
+                        <p class="text-xs text-indigo-300 uppercase font-bold tracking-widest mb-1">Service Level Agreement</p>
+                        <p class="text-sm font-medium text-indigo-100">Professional inquiries receive a response within 24 hours.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center text-slate-400 text-sm pb-12 border-t pt-8">
+            &copy; 2025-2026 G-MAC Solutions. Verified On-Chain Infrastructure. All Rights Reserved.
         </footer>
     </div>
 </body>
 </html>
+
